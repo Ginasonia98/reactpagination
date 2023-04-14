@@ -1,6 +1,6 @@
-import "./App.css";
 import ReactPaginate from "react-paginate";
 import { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
   const [items, setItems] = useState([]);
@@ -16,7 +16,6 @@ function App() {
       const data = await res.json();
       const total = res.headers.get("x-total-count");
       setpageCount(Math.ceil(total / limit));
-      // console.log(Math.ceil(total/12));
       setItems(data);
     };
 
@@ -32,24 +31,19 @@ function App() {
   };
 
   const handlePageClick = async (data) => {
-    console.log(data.selected);
-
     let currentPage = data.selected + 1;
-
-    const photosFormServer = await fetchPhotos(currentPage);
-    setItems(photosFormServer);
-    // scroll to the top
-    //window.scrollTo(0, 0)
+    const photosFromServer = await fetchPhotos(currentPage);
+    setItems(photosFromServer);
   };
 
   return (
     <div className="container">
-      <div className="row m-2">
+      <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {items.map((item) => {
           return (
-            <div key={item.id} className="col-sm-6 col-md-4 v my-2">
-              <div className="card shadow-sm w-100" style={{ minHeight: 225 }}>
-                <div className="card-body">
+            <div key={item.id} className="col">
+              <div className="card shadow-sm h-100">
+                <div className="card-body d-flex flex-column justify-content-between">
                   <h4 className="card-title text-center h2">{item.id} </h4>
                   <h4 className="card-title text-center h2">{item.title} </h4>
                   <h6 className="card-subtitle mb-2 text-muted text-center">
@@ -71,7 +65,7 @@ function App() {
         marginPagesDisplayed={2}
         pageRangeDisplayed={3}
         onPageChange={handlePageClick}
-        containerClassName={"pagination justify-content-center"}
+        containerClassName={"pagination justify-content-center mt-4"}
         pageClassName={"page-item"}
         pageLinkClassName={"page-link"}
         previousClassName={"page-item"}
